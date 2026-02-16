@@ -1,0 +1,428 @@
+/* ============================================================================
+   DRDO PORTAL - DESIGN SYSTEM
+   Modern institutional design with DRDO-inspired colors
+   ============================================================================ */
+
+/* Import Poppins font from Google Fonts - must come before Tailwind */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Import Tailwind CSS v4 */
+@import "tailwindcss";
+
+/* ============================================================================
+   DESIGN TOKENS - Tailwind CSS v4 @theme Directive
+   ============================================================================ */
+
+@theme {
+  /* ---------------------------------------------------------------------------
+     COLORS - Modern DRDO-inspired palette
+     --------------------------------------------------------------------------- */
+  
+  /* Primary - Navy Blue (Modern institutional) */
+  --color-primary-50: #EBF0F9;
+  --color-primary-100: #D6E1F3;
+  --color-primary-200: #ADC3E7;
+  --color-primary-300: #6A91CF;
+  --color-primary-400: #3B6AB8;
+  --color-primary-500: #1B4F8A;
+  --color-primary-600: #153F6E;
+  --color-primary-700: #102F53;
+  --color-primary-800: #0A1F37;
+  --color-primary-900: #05101C;
+
+  /* Accent - Saffron/Orange (CTA & highlights) */
+  --color-accent-50: #FFF4EB;
+  --color-accent-100: #FFE0C4;
+  --color-accent-200: #FFC28A;
+  --color-accent-300: #FF9F4A;
+  --color-accent-400: #F58220;
+  --color-accent-500: #D96B0A;
+  --color-accent-600: #B35608;
+
+  /* Teal - Secondary actions & info states */
+  --color-teal-50: #EBF5F5;
+  --color-teal-100: #C7E5E5;
+  --color-teal-200: #8FCCCC;
+  --color-teal-300: #5CB3B3;
+  --color-teal-400: #2E9999;
+  --color-teal-500: #0F7A7A;
+  --color-teal-600: #0A3D3D;
+
+  /* Neutral - Grays for text, backgrounds, borders */
+  --color-neutral-50: #F9FAFB;
+  --color-neutral-100: #F3F4F6;
+  --color-neutral-200: #E5E7EB;
+  --color-neutral-300: #D1D5DB;
+  --color-neutral-400: #9CA3AF;
+  --color-neutral-500: #6B7280;
+  --color-neutral-600: #4B5563;
+  --color-neutral-700: #374151;
+  --color-neutral-800: #1F2937;
+  --color-neutral-900: #111827;
+  --color-neutral-950: #0C0E12;
+
+  /* Semantic Colors */
+  --color-success-50: #F0FDF4;
+  --color-success-500: #16A34A;
+  --color-success-600: #15803D;
+
+  --color-warning-50: #FFFBEB;
+  --color-warning-500: #EAB308;
+  --color-warning-600: #CA8A04;
+
+  --color-error-50: #FEF2F2;
+  --color-error-500: #DC2626;
+  --color-error-600: #B91C1C;
+
+  --color-info-50: #EFF6FF;
+  --color-info-500: #3B82F6;
+  --color-info-600: #2563EB;
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY - Poppins font system
+     --------------------------------------------------------------------------- */
+  
+  --font-sans: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Font sizes */
+  --font-size-xs: 0.75rem;      /* 12px */
+  --font-size-sm: 0.875rem;     /* 14px */
+  --font-size-base: 1rem;        /* 16px */
+  --font-size-lg: 1.125rem;      /* 18px */
+  --font-size-xl: 1.25rem;       /* 20px */
+  --font-size-2xl: 1.5rem;       /* 24px */
+  --font-size-3xl: 1.875rem;     /* 30px */
+  --font-size-4xl: 2.25rem;      /* 36px */
+  --font-size-5xl: 3rem;         /* 48px */
+  --font-size-6xl: 3.5rem;       /* 56px */
+
+  /* Font weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line heights */
+  --line-height-tight: 1.1;
+  --line-height-snug: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+
+  /* ---------------------------------------------------------------------------
+     SPACING - 4px base grid (Tailwind defaults extended)
+     --------------------------------------------------------------------------- */
+  
+  --spacing-section-y: 5rem;     /* 80px - Section vertical padding */
+  --spacing-section-y-sm: 3rem;  /* 48px - Mobile section padding */
+
+  /* ---------------------------------------------------------------------------
+     SHADOWS - Elevation system
+     --------------------------------------------------------------------------- */
+  
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.12);
+  --shadow-card-hover: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+  /* ---------------------------------------------------------------------------
+     BORDER RADIUS - Rounded corners
+     --------------------------------------------------------------------------- */
+  
+  --radius-sm: 0.25rem;   /* 4px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-xl: 1rem;      /* 16px */
+  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+
+  /* ---------------------------------------------------------------------------
+     LAYOUT - Container max widths
+     --------------------------------------------------------------------------- */
+  
+  --max-width-container: 1280px;
+  --max-width-narrow: 768px;
+  --max-width-wide: 1440px;
+}
+
+/* ============================================================================
+   BASE STYLES & RESETS
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  line-height: var(--line-height-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+}
+
+/* ---------------------------------------------------------------------------
+   TYPOGRAPHY RESETS
+   --------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-primary-800);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: var(--font-size-3xl);
+}
+
+h3 {
+  font-size: var(--font-size-2xl);
+}
+
+h4 {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+}
+
+h5 {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+h6 {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+}
+
+p {
+  margin: 0 0 1rem 0;
+  line-height: var(--line-height-relaxed);
+}
+
+a {
+  color: var(--color-primary-500);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-600);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   BUTTON RESETS
+   --------------------------------------------------------------------------- */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------------------
+   FORM RESETS
+   --------------------------------------------------------------------------- */
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* ---------------------------------------------------------------------------
+   IMAGE RESETS
+   --------------------------------------------------------------------------- */
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================================================
+   ANIMATION KEYFRAMES - ICANN-style animations
+   ============================================================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   UTILITY CLASSES
+   ============================================================================ */
+
+/* Container utilities */
+.container-custom {
+  width: 100%;
+  max-width: var(--max-width-container);
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container-custom {
+    padding: 0 2rem;
+  }
+}
+
+/* Section spacing */
+.section-spacing {
+  padding-top: var(--spacing-section-y-sm);
+  padding-bottom: var(--spacing-section-y-sm);
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: var(--spacing-section-y);
+    padding-bottom: var(--spacing-section-y);
+  }
+}
+
+/* Card hover effect - ICANN-style */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Animated element base */
+.animated {
+  will-change: opacity, transform;
+}
+
+/* Focus visible utilities */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================================================
+   CUSTOM CSS VARIABLES FOR ANIMATIONS (GSAP integration)
+   ============================================================================ */
+
+:root {
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.8s;
+  --duration-slow-mobile: 0.4s;
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}

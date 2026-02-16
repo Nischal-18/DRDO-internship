@@ -1,0 +1,8 @@
+/* App-specific styles - intentionally minimal
+   Most styling should use Tailwind utilities from the design system */
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
