@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import PublicLayout from '@/layouts/PublicLayout';
+import AdminLayout from '@/layouts/AdminLayout';
+import { ProtectedRoute, AdminRoute } from '@/components/common';
 
 // Public pages
 import Home from '@/pages/public/Home';
@@ -13,6 +15,14 @@ import News from '@/pages/public/News';
 import Careers from '@/pages/public/Careers';
 import Tenders from '@/pages/public/Tenders';
 import Contact from '@/pages/public/Contact';
+
+// Auth pages
+import { Login } from '@/pages/auth/Login';
+import { Register } from '@/pages/auth/Register';
+import { Dashboard } from '@/pages/auth/Dashboard';
+
+// Admin pages
+import { AdminDashboard, ApplicationList, ApplicationDetail, UserList } from '@/pages/admin';
 
 const router = createBrowserRouter([
   {
@@ -62,6 +72,50 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />,
+      },
+    ],
+  },
+  // Auth routes (outside PublicLayout)
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/dashboard',
+    element: (
+      <ProtectedRoute>
+        <Dashboard />
+      </ProtectedRoute>
+    ),
+  },
+  // Admin routes
+  {
+    path: '/admin',
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
+    children: [
+      {
+        path: 'dashboard',
+        element: <AdminDashboard />,
+      },
+      {
+        path: 'applications',
+        element: <ApplicationList />,
+      },
+      {
+        path: 'applications/:id',
+        element: <ApplicationDetail />,
+      },
+      {
+        path: 'users',
+        element: <UserList />,
       },
     ],
   },

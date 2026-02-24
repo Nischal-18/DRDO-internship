@@ -12,10 +12,10 @@ const Tenders: React.FC = () => {
           <Breadcrumbs items={[{ label: 'Tenders' }]} className="mb-8" />
           
           <AnimatedSection animation="fadeInUp">
-            <h1 className="text-4xl font-bold text-primary-800 mb-6">
+            <h1 className="text-4xl font-bold text-neutral-50 mb-6">
               Tenders & Procurement
             </h1>
-            <p className="text-lg text-neutral-600 mb-12">
+            <p className="text-lg text-neutral-400 mb-12">
               Current tender opportunities and procurement information.
             </p>
           </AnimatedSection>
@@ -24,7 +24,7 @@ const Tenders: React.FC = () => {
             {[1, 2, 3, 4].map((i) => (
               <AnimatedSection key={i} animation="fadeInUp" delay={i * 0.1}>
                 <Card
-                  icon={<FileText className="w-6 h-6 text-primary-600" />}
+                  icon={<FileText className="w-6 h-6 text-primary-400" />}
                   title={`Tender Notice ${i}`}
                   description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Deadline: DD/MM/YYYY"
                 />

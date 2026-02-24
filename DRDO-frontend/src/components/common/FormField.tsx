@@ -34,17 +34,18 @@ const FormField: React.FC<FormFieldProps> = ({
   className = '',
 }) => {
   const baseInputStyles = `
-    w-full px-4 py-2 rounded-lg border-2 
-    bg-white text-neutral-900
-    placeholder:text-neutral-400
-    transition-colors
-    focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-transparent
-    disabled:bg-neutral-100 disabled:cursor-not-allowed
-  `;
+    w-full px-4 py-2.5 rounded-xl border
+    bg-surface-800/80 text-neutral-100
+    placeholder:text-neutral-500
+    transition-all duration-300
+    focus:outline-none focus:ring-2 focus:ring-primary-400/50 focus:border-primary-400/50
+    focus:bg-surface-800
+    disabled:bg-surface-900 disabled:text-neutral-500 disabled:cursor-not-allowed
+  `.trim().replace(/\s+/g, ' ');
 
   const borderStyles = error
-    ? 'border-error-500'
-    : 'border-neutral-300 hover:border-neutral-400';
+    ? 'border-error-500/50'
+    : 'border-surface-600/50 hover:border-surface-500';
 
   const inputClasses = `${baseInputStyles} ${borderStyles}`.trim().replace(/\s+/g, ' ');
 
@@ -106,16 +107,16 @@ const FormField: React.FC<FormFieldProps> = ({
 
   return (
     <div className={`flex flex-col gap-1.5 ${className}`}>
-      <label htmlFor={name} className="text-sm font-medium text-neutral-700">
+      <label htmlFor={name} className="text-sm font-medium text-neutral-300">
         {label}
-        {required && <span className="text-error-500 ml-1">*</span>}
+        {required && <span className="text-error-400 ml-1">*</span>}
       </label>
 
       {renderInput()}
 
       {error && (
-        <p className="text-sm text-error-600 flex items-center gap-1">
-          <span>⚠</span>
+        <p className="text-sm text-error-400 flex items-center gap-1">
+          <span>!</span>
           {error}
         </p>
       )}

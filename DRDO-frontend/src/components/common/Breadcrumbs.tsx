@@ -18,7 +18,7 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' }) => {
       {/* Home link */}
       <Link
         to="/"
-        className="text-neutral-500 hover:text-primary-600 transition-colors"
+        className="text-neutral-500 hover:text-primary-400 transition-colors"
         aria-label="Home"
       >
         <Home className="w-4 h-4" />
@@ -29,16 +29,16 @@ const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, className = '' }) => {
 
         return (
           <React.Fragment key={index}>
-            <ChevronRight className="w-4 h-4 text-neutral-400" />
+            <ChevronRight className="w-4 h-4 text-surface-600" />
             
             {isLast || !item.to ? (
-              <span className="text-neutral-700 font-medium" aria-current="page">
+              <span className="text-neutral-200 font-medium" aria-current="page">
                 {item.label}
               </span>
             ) : (
               <Link
                 to={item.to}
-                className="text-neutral-500 hover:text-primary-600 transition-colors"
+                className="text-neutral-500 hover:text-primary-400 transition-colors"
               >
                 {item.label}
               </Link>

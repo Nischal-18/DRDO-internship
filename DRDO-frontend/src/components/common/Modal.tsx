@@ -73,28 +73,28 @@ const Modal: React.FC<ModalProps> = ({
 
   const modalContent = (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-surface-950/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]"
       onClick={handleBackdropClick}
     >
       <div
         ref={modalRef}
         className={`
           ${sizeStyles[size]}
-          w-full bg-white rounded-xl shadow-xl
+          w-full bg-surface-800 border border-surface-700/50 rounded-2xl shadow-xl
           animate-[scaleIn_0.3s_ease-out]
           max-h-[90vh] flex flex-col
         `}
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-surface-700/50">
             {title && (
-              <h3 className="text-xl font-semibold text-primary-800">{title}</h3>
+              <h3 className="text-xl font-semibold text-neutral-50">{title}</h3>
             )}
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-1 rounded-lg text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors focus-ring"
+                className="p-1.5 rounded-lg text-neutral-400 hover:bg-surface-700 hover:text-neutral-200 transition-all duration-200 focus-ring"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -110,7 +110,7 @@ const Modal: React.FC<ModalProps> = ({
 
         {/* Footer */}
         {footer && (
-          <div className="px-6 py-4 border-t border-neutral-200 bg-neutral-50 rounded-b-xl">
+          <div className="px-6 py-4 border-t border-surface-700/50 bg-surface-900/50 rounded-b-2xl">
             {footer}
           </div>
         )}

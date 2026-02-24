@@ -21,7 +21,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   };
 
   const colorStyles = {
-    primary: 'text-primary-600',
+    primary: 'text-primary-400',
     accent: 'text-accent-400',
     white: 'text-white',
   };
@@ -30,7 +30,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div className="flex flex-col items-center justify-center gap-3">
       <Loader2 className={`${sizeStyles[size]} ${colorStyles[color]} animate-spin`} />
       {text && (
-        <p className={`text-sm ${color === 'white' ? 'text-white' : 'text-neutral-600'}`}>
+        <p className={`text-sm ${color === 'white' ? 'text-white' : 'text-neutral-400'}`}>
           {text}
         </p>
       )}
@@ -39,7 +39,7 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   if (fullPage) {
     return (
-      <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-surface-950/90 backdrop-blur-sm flex items-center justify-center z-50">
         {spinner}
       </div>
     );
@@ -48,4 +48,5 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   return spinner;
 };
 
+export { LoadingSpinner };
 export default LoadingSpinner;

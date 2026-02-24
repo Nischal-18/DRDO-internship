@@ -12,10 +12,10 @@ const News: React.FC = () => {
           <Breadcrumbs items={[{ label: 'News & Announcements' }]} className="mb-8" />
           
           <AnimatedSection animation="fadeInUp">
-            <h1 className="text-4xl font-bold text-primary-800 mb-6">
+            <h1 className="text-4xl font-bold text-neutral-50 mb-6">
               News & Announcements
             </h1>
-            <p className="text-lg text-neutral-600 mb-12">
+            <p className="text-lg text-neutral-400 mb-12">
               Stay updated with the latest developments and achievements.
             </p>
           </AnimatedSection>
@@ -24,7 +24,7 @@ const News: React.FC = () => {
             {[1, 2, 3, 4, 5].map((i) => (
               <AnimatedSection key={i} animation="fadeInUp" delay={i * 0.1}>
                 <Card
-                  icon={<Newspaper className="w-6 h-6 text-primary-600" />}
+                  icon={<Newspaper className="w-6 h-6 text-primary-400" />}
                   title={`News Article ${i}`}
                   description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 />

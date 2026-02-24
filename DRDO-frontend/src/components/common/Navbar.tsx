@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, LogOut, User, Shield } from 'lucide-react';
 import Button from './Button';
+import { useAuth } from '../../context/AuthContext';
 
 interface NavLink {
   label: string;
@@ -21,6 +22,8 @@ const navLinks: NavLink[] = [
 const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -37,18 +40,24 @@ const Navbar: React.FC = () => {
     setIsMobileMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+    closeMobileMenu();
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-neutral-200 shadow-sm">
+    <header className="sticky top-0 z-40 glass-strong border-b border-surface-700/30">
       <nav className="container-custom">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group" onClick={closeMobileMenu}>
-            <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center group-hover:bg-primary-700 transition-colors">
-              <span className="text-white font-bold text-xl">D</span>
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center group-hover:shadow-glow-cyan transition-all duration-300">
+              <Shield className="w-6 h-6 text-surface-950" />
             </div>
             <div className="hidden sm:block">
-              <div className="text-xl font-bold text-primary-800">DRDO Portal</div>
-              <div className="text-xs text-neutral-600">Defence Research & Development</div>
+              <div className="text-xl font-bold text-neutral-50">DRDO Portal</div>
+              <div className="text-xs text-neutral-500">Defence Research & Development</div>
             </div>
           </Link>
 
@@ -59,11 +68,11 @@ const Navbar: React.FC = () => {
                 key={link.to}
                 to={link.to}
                 className={`
-                  px-4 py-2 rounded-lg font-medium transition-colors
+                  px-4 py-2 rounded-xl font-medium transition-all duration-300
                   ${
                     isActive(link.to)
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-neutral-700 hover:text-primary-600 hover:bg-neutral-50'
+                      ? 'text-primary-400 bg-primary-400/10 border border-primary-400/20'
+                      : 'text-neutral-400 hover:text-neutral-200 hover:bg-surface-800/60'
                   }
                 `}
               >
@@ -73,16 +82,40 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* CTA Button (Desktop) */}
-          <div className="hidden lg:block">
-            <Button variant="accent" size="md" as="link" to="/careers">
-              Apply Now
-            </Button>
+          <div className="hidden lg:flex items-center gap-3">
+            {isAuthenticated ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-neutral-300 hover:bg-surface-800/60 hover:text-neutral-100 transition-all duration-300 font-medium"
+                >
+                  <User className="w-4 h-4" />
+                  <span>{user?.full_name || 'Dashboard'}</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-neutral-400 hover:bg-surface-800/60 hover:text-neutral-200 transition-all duration-300 font-medium focus-ring"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" as="link" to="/login">
+                  Login
+                </Button>
+                <Button variant="primary" size="sm" as="link" to="/register">
+                  Register
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={toggleMobileMenu}
-            className="lg:hidden p-2 rounded-lg text-neutral-700 hover:bg-neutral-100 transition-colors focus-ring"
+            className="lg:hidden p-2 rounded-xl text-neutral-300 hover:bg-surface-800/60 transition-all duration-300 focus-ring"
             aria-label="Toggle menu"
             aria-expanded={isMobileMenuOpen}
           >
@@ -96,7 +129,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-neutral-200 animate-[fadeIn_0.2s_ease-out]">
+          <div className="lg:hidden py-4 border-t border-surface-700/30 animate-[slideInDown_0.2s_ease-out]">
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
@@ -104,21 +137,61 @@ const Navbar: React.FC = () => {
                   to={link.to}
                   onClick={closeMobileMenu}
                   className={`
-                    px-4 py-3 rounded-lg font-medium transition-colors
+                    px-4 py-3 rounded-xl font-medium transition-all duration-300
                     ${
                       isActive(link.to)
-                        ? 'text-primary-600 bg-primary-50'
-                        : 'text-neutral-700 hover:text-primary-600 hover:bg-neutral-50'
+                        ? 'text-primary-400 bg-primary-400/10'
+                        : 'text-neutral-400 hover:text-neutral-200 hover:bg-surface-800/60'
                     }
                   `}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="mt-4 px-4">
-                <Button variant="accent" fullWidth as="link" to="/careers" onClick={closeMobileMenu}>
-                  Apply Now
-                </Button>
+              <div className="mt-4 px-4 flex flex-col gap-2">
+                {isAuthenticated ? (
+                  <>
+                    <Button
+                      variant="secondary"
+                      fullWidth
+                      as="link"
+                      to="/dashboard"
+                      onClick={closeMobileMenu}
+                    >
+                      <User className="w-4 h-4 mr-2" />
+                      {user?.full_name || 'Dashboard'}
+                    </Button>
+                    <Button
+                      variant="accent"
+                      fullWidth
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="secondary"
+                      fullWidth
+                      as="link"
+                      to="/login"
+                      onClick={closeMobileMenu}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="primary"
+                      fullWidth
+                      as="link"
+                      to="/register"
+                      onClick={closeMobileMenu}
+                    >
+                      Register
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

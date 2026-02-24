@@ -4,7 +4,7 @@ import { Loader2 } from 'lucide-react';
 
 export interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'accent' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   disabled?: boolean;
@@ -31,15 +31,38 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   className = '',
 }) => {
-  // Base styles
-  const baseStyles = 'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-colors focus-ring disabled:opacity-50 disabled:cursor-not-allowed';
+  // Base styles - dark theme
+  const baseStyles = `
+    inline-flex items-center justify-center gap-2 font-semibold rounded-xl
+    transition-all duration-300 ease-out
+    focus-ring
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none
+    active:scale-[0.97]
+  `.trim().replace(/\s+/g, ' ');
 
-  // Variant styles
+  // Variant styles - dark theme with glows
   const variantStyles = {
-    primary: 'bg-primary-600 text-white hover:bg-primary-700 shadow-md',
-    accent: 'bg-accent-400 text-white hover:bg-accent-500 shadow-md',
-    secondary: 'bg-white text-primary-600 border-2 border-primary-600 hover:bg-primary-50',
-    ghost: 'text-primary-600 hover:bg-primary-50',
+    primary: `
+      bg-gradient-to-r from-primary-500 to-primary-400 text-surface-950
+      hover:shadow-glow-cyan hover:brightness-110
+      shadow-md
+    `.trim().replace(/\s+/g, ' '),
+    accent: `
+      bg-gradient-to-r from-accent-500 to-accent-400 text-white
+      hover:shadow-glow-orange hover:brightness-110
+      shadow-md
+    `.trim().replace(/\s+/g, ' '),
+    secondary: `
+      bg-surface-800 text-neutral-100 border border-surface-600
+      hover:border-primary-400/50 hover:bg-surface-700 hover:text-primary-300
+    `.trim().replace(/\s+/g, ' '),
+    ghost: `
+      text-neutral-300 hover:text-primary-400 hover:bg-surface-800/60
+    `.trim().replace(/\s+/g, ' '),
+    danger: `
+      bg-error-500/20 text-error-400 border border-error-500/30
+      hover:bg-error-500/30 hover:border-error-400/50
+    `.trim().replace(/\s+/g, ' '),
   };
 
   // Size styles

@@ -1,13 +1,18 @@
 // Common Components Barrel Export
+export { default as AdminRoute } from './AdminRoute';
 export { default as AnimatedSection } from './AnimatedSection';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as Button } from './Button';
 export { default as Card } from './Card';
 export { default as Footer } from './Footer';
 export { default as FormField } from './FormField';
+export { default as GradientMesh } from './GradientMesh';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as Modal } from './Modal';
 export { default as Navbar } from './Navbar';
+export { default as PageTransition } from './PageTransition';
+export { default as ParticleBackground } from './ParticleBackground';
+export { default as ProtectedRoute } from './ProtectedRoute';
 
 // Export types
 export type { AnimatedSectionProps } from './AnimatedSection';
