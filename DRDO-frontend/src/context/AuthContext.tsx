@@ -27,16 +27,35 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load user from localStorage on mount
+  // Load user from localStorage on mount and verify token with backend
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem('token');
 
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
+      if (storedToken) {
+        setToken(storedToken);
+        try {
+          // Verify token and get fresh user data from backend
+          const response = await api.auth.getProfile();
+          const userData = {
+            userId: response.data!.user_id ?? response.data!.userId ?? 0,
+            full_name: response.data!.full_name,
+            email: response.data!.email,
+            role: response.data!.role,
+          };
+          setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData));
+        } catch {
+          // Token is invalid, clear everything
+          setToken(null);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = async (email: string, password: string) => {

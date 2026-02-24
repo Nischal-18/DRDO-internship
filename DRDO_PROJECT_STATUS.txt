@@ -1,0 +1,328 @@
+================================================================================
+                    DRDO PORTAL - COMPLETE PROJECT STATUS
+                           Updated: February 25, 2026
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+A web portal for DRDO where:
+- Users can register, login, view dashboard, and apply for programs
+- Admins can login, view all applications, manage users, and approve/reject applications
+
+Tech Stack:
+- Frontend: React 19 + TypeScript + Tailwind CSS 4 + Vite 7
+- Backend: Node.js + Express
+- Database: Oracle XE (Docker container: oracle-free)
+- Authentication: JWT tokens
+
+================================================================================
+                              WHAT'S WORKING
+================================================================================
+
+BACKEND APIs (All Functional)
+--------------------------------------------------------------------------------
+| Method | Endpoint                        | Description              | Auth    |
+|--------|--------------------------------|--------------------------|---------|
+| POST   | /api/auth/register             | Create user account      | No      |
+| POST   | /api/auth/login                | Login user               | No      |
+| GET    | /api/auth/profile              | Get user profile         | Yes     |
+| POST   | /api/applications              | Submit application       | Yes     |
+| GET    | /api/applications/my-applications | Get user's apps        | Yes     |
+| GET    | /api/applications              | Get all apps (admin)     | Admin   |
+| GET    | /api/applications/:id          | Get single application   | Yes     |
+| PUT    | /api/applications/:id/status   | Update app status        | Admin   |
+| GET    | /api/users                     | Get all users            | Admin   |
+| GET    | /api/users/:id                 | Get user by ID           | Admin   |
+| PUT    | /api/users/:id/role            | Update user role         | Admin   |
+| PUT    | /api/users/:id/status          | Activate/deactivate user | Admin   |
+| DELETE | /api/users/:id                 | Delete user              | Admin   |
+| GET    | /api/admin/stats               | Get dashboard stats      | Admin   |
+| GET    | /api/admin/dashboard           | Get full dashboard data  | Admin   |
+--------------------------------------------------------------------------------
+
+DATABASE TABLES (3 tables - cleaned up)
+--------------------------------------------------------------------------------
+| Table        | Description                                    | Status  |
+|--------------|------------------------------------------------|---------|
+| users        | All users (applicants, admins, reviewers)      | Working |
+| programs     | DRDO programs (4 sample programs)              | Working |
+| applications | User applications for programs                 | Working |
+--------------------------------------------------------------------------------
+
+DELETED TABLES (removed on Feb 25, 2026):
+- documents (no API implemented)
+- news (no API implemented)
+- faqs (no API implemented)
+- audit_logs (no API implemented)
+- notifications (no API implemented)
+
+FRONTEND PAGES (All Functional)
+--------------------------------------------------------------------------------
+PUBLIC PAGES:
+| Route              | Page          | Status     |
+|--------------------|---------------|------------|
+| /                  | Home          | Working    |
+| /about             | About         | Working    |
+| /vision-mission    | Vision/Mission| Working    |
+| /research          | Research      | Working    |
+| /labs              | Labs          | Working    |
+| /technology        | Technology    | Working    |
+| /projects          | Projects      | Working    |
+| /news              | News          | Working    |
+| /careers           | Careers       | Working    |
+| /tenders           | Tenders       | Working    |
+| /contact           | Contact       | Working    |
+
+AUTH PAGES:
+| Route              | Page          | Status     |
+|--------------------|---------------|------------|
+| /login             | Login         | Working    |
+| /register          | Register      | Working    |
+| /dashboard         | User Dashboard| Working    |
+
+ADMIN PAGES:
+| Route                    | Page              | Status     |
+|--------------------------|-------------------|------------|
+| /admin/dashboard         | Admin Dashboard   | Working    |
+| /admin/applications      | Application List  | Working    |
+| /admin/applications/:id  | Application Detail| Working    |
+| /admin/users             | User Management   | Working    |
+--------------------------------------------------------------------------------
+
+FEATURES WORKING:
+- User registration with auto-login after registration
+- User login with JWT authentication
+- Token verification on app load (GET /api/auth/profile)
+- Auto-logout if token is invalid/expired
+- Protected routes (redirect to login if not authenticated)
+- Admin-only routes (redirect if not admin)
+- Submit application from Careers page (Apply Now buttons)
+- View own applications in user dashboard
+- Admin: View all applications with search/filter
+- Admin: Approve/reject applications with remarks
+- Admin: Manage users (change role, activate/deactivate, delete)
+- Responsive design with mobile menu
+- Loading states on buttons during API calls
+
+================================================================================
+                            WHAT'S NOT WORKING
+================================================================================
+
+NON-FUNCTIONAL UI ELEMENTS:
+--------------------------------------------------------------------------------
+| Location              | Element                | Issue                       |
+|-----------------------|------------------------|-----------------------------|
+| Dashboard.tsx         | "Apply for Program"    | Navigates to /programs      |
+|                       | "Browse Programs"      | which doesn't exist         |
+| Login.tsx             | "Forgot password?"     | href="#" - does nothing     |
+| Register.tsx          | "Terms and Conditions" | href="#" - does nothing     |
+| Footer.tsx            | "Privacy Policy"       | /privacy route missing      |
+| Footer.tsx            | "Terms of Service"     | /terms route missing        |
+| Footer.tsx            | "Accessibility"        | /accessibility route missing|
+| Contact.tsx           | Contact form           | No submit handler, no API   |
+| Login.tsx             | "Remember me" checkbox | Value not used              |
+| Register.tsx          | Terms checkbox         | Required but state not tracked|
+--------------------------------------------------------------------------------
+
+PAGES WITH STATIC/MOCK DATA (need dynamic data or API):
+--------------------------------------------------------------------------------
+| Page          | Current State                    | Notes                     |
+|---------------|----------------------------------|---------------------------|
+| Careers.tsx   | Hardcoded [1,2,3,4] positions    | Could fetch from programs |
+| News.tsx      | Hardcoded mock news              | No news API exists        |
+| Tenders.tsx   | Hardcoded mock tenders           | No tenders table/API      |
+| Research.tsx  | Static content                   | Informational only        |
+| Labs.tsx      | Static content                   | Informational only        |
+| Technology.tsx| Static content                   | Informational only        |
+| Projects.tsx  | Static content                   | Informational only        |
+--------------------------------------------------------------------------------
+
+CARDS WITH HOVER BUT NO CLICK ACTION (visual issue only):
+--------------------------------------------------------------------------------
+These cards have hover effects but don't do anything when clicked:
+- Home.tsx: 3 focus area cards
+- Research.tsx: 6 research area cards
+- Labs.tsx: 6 laboratory cards
+- News.tsx: 5 news cards
+- Technology.tsx: 6 technology cards
+- Projects.tsx: 4 project cards
+- Tenders.tsx: 4 tender cards
+
+Total: 34 cards (hover={false} can be set to fix visual confusion)
+--------------------------------------------------------------------------------
+
+MISSING ROUTES:
+--------------------------------------------------------------------------------
+| Route          | Referenced In        | Status         |
+|----------------|---------------------|----------------|
+| /programs      | Dashboard.tsx       | Does not exist |
+| /privacy       | Footer.tsx          | Does not exist |
+| /terms         | Footer.tsx          | Does not exist |
+| /accessibility | Footer.tsx          | Does not exist |
+--------------------------------------------------------------------------------
+
+================================================================================
+                           RECENT CHANGES (Feb 25, 2026)
+================================================================================
+
+1. CAREERS PAGE - Apply Now Buttons Fixed
+   File: /DRDO-frontend/src/pages/public/Careers.tsx
+   Changes:
+   - Added useAuth and applicationsApi imports
+   - Added handleApply() function that:
+     * Checks if user is logged in
+     * Redirects to /login if not authenticated
+     * Calls POST /api/applications if authenticated
+     * Shows success/error alert
+   - Added loading state (shows "Applying..." during submission)
+   - Set hover={false} on cards (they don't need click handlers)
+
+2. AUTH CONTEXT - Now Uses GET /api/auth/profile
+   File: /DRDO-frontend/src/context/AuthContext.tsx
+   Changes:
+   - On app load, if token exists in localStorage:
+     * Calls GET /api/auth/profile to verify token
+     * If valid: refreshes user data from backend
+     * If invalid: clears token and logs user out
+   - Prevents users with expired/invalid tokens from staying logged in
+
+3. DATABASE - Removed 5 Unused Tables
+   File: /DRDO-backend/schema.sql
+   Dropped tables:
+   - documents
+   - news
+   - faqs
+   - audit_logs
+   - notifications
+   
+   Remaining tables: users, programs, applications
+
+================================================================================
+                              DATABASE INFO
+================================================================================
+
+Connection Details:
+- Container: oracle-free
+- User: system
+- Password: MyStrongPassword123
+- Service: freepdb1
+- Connection String: 127.0.0.1:1521/freepdb1
+
+Commands:
+- Start Oracle: docker start oracle-free
+- Connect: sqlplus system/MyStrongPassword123@//127.0.0.1:1521/freepdb1
+- List tables: SELECT table_name FROM user_tables;
+- Check project tables only:
+  docker exec oracle-free bash -c "echo \"SELECT table_name FROM user_tables WHERE table_name IN ('USERS','PROGRAMS','APPLICATIONS') ORDER BY table_name;\" | sqlplus -s system/MyStrongPassword123@//127.0.0.1:1521/freepdb1"
+
+Sample Programs in Database:
+| program_id | name                      | category           |
+|------------|---------------------------|-------------------|
+| 1          | Graduate Apprenticeship   | apprenticeship    |
+| 2          | Technical Training Program| training          |
+| 3          | Research Fellowship       | graduate          |
+| 4          | Skill Development Course  | skill_development |
+
+================================================================================
+                            HOW TO RUN THE PROJECT
+================================================================================
+
+Terminal 1 - Start Oracle & Backend:
+  docker start oracle-free
+  cd /home/nischal/DRDO/DRDO-backend
+  npm start
+  # Should see: Server running on http://localhost:5000
+
+Terminal 2 - Start Frontend:
+  cd /home/nischal/DRDO/DRDO-frontend
+  npm run dev
+  # Should see: http://localhost:5173/
+
+Test Accounts:
+- User: test@test.com / test123 (if created)
+- Admin: admin@drdo.gov.in / Admin@123 (if password was hashed)
+
+================================================================================
+                              PROJECT STRUCTURE
+================================================================================
+
+/home/nischal/DRDO/
+├── DRDO-backend/
+│   ├── src/
+│   │   ├── config/db.js           # Oracle connection pool
+│   │   ├── controllers/           # API business logic
+│   │   │   ├── authController.js
+│   │   │   ├── applicationController.js
+│   │   │   └── userController.js
+│   │   ├── middleware/
+│   │   │   └── authMiddleware.js  # JWT verification
+│   │   ├── models/
+│   │   │   ├── user.js
+│   │   │   └── application.js
+│   │   └── routes/
+│   │       ├── authRoutes.js
+│   │       ├── applicationRoutes.js
+│   │       ├── userRoutes.js
+│   │       └── adminRoutes.js
+│   ├── app.js                     # Express server
+│   ├── schema.sql                 # Database schema (3 tables)
+│   └── .env                       # Database credentials
+│
+└── DRDO-frontend/
+    ├── src/
+    │   ├── components/common/     # Reusable UI components
+    │   ├── context/
+    │   │   └── AuthContext.tsx    # Authentication state
+    │   ├── layouts/
+    │   │   ├── PublicLayout.tsx
+    │   │   └── AdminLayout.tsx
+    │   ├── pages/
+    │   │   ├── public/            # Public pages (Home, About, etc.)
+    │   │   ├── auth/              # Login, Register, Dashboard
+    │   │   └── admin/             # Admin pages
+    │   ├── services/
+    │   │   └── api.ts             # All API calls
+    │   ├── router.tsx             # Route definitions
+    │   └── main.tsx               # App entry point
+    └── package.json
+
+================================================================================
+                            COMPLETION STATUS
+================================================================================
+
+| Component              | Status        | Completion |
+|------------------------|---------------|------------|
+| Backend APIs           | Complete      | 100%       |
+| Database Schema        | Complete      | 100%       |
+| User Authentication    | Complete      | 100%       |
+| User Dashboard         | Complete      | 100%       |
+| Admin Dashboard        | Complete      | 100%       |
+| Application Management | Complete      | 100%       |
+| User Management        | Complete      | 100%       |
+| Careers Apply Feature  | Complete      | 100%       |
+| Public Pages           | Partial       | 80%        |
+| Contact Form           | Not Working   | 0%         |
+| Password Reset         | Not Started   | 0%         |
+| Programs API           | Not Started   | 0%         |
+
+Overall Project Completion: ~85%
+
+================================================================================
+                              NEXT STEPS (Optional)
+================================================================================
+
+Priority Fixes:
+1. Fix Dashboard buttons (change /programs to /careers or create programs page)
+2. Create forgot password flow (needs backend endpoint + email service)
+3. Fix Contact form (add state + API endpoint)
+4. Add static pages for /privacy, /terms, /accessibility (or remove links)
+
+Enhancements:
+1. Fetch programs from database instead of hardcoding [1,2,3,4]
+2. Add toast notifications instead of alerts
+3. Add application details view for users
+4. Add document upload feature
+
+================================================================================
+                                  END OF FILE
+================================================================================
