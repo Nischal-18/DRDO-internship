@@ -1,0 +1,310 @@
+================================================================================
+                    DRDO PORTAL - WINDOWS SETUP GUIDE
+                         For Semi-Technical Users
+================================================================================
+
+This guide will help you set up and run the DRDO Portal on a Windows computer.
+
+================================================================================
+                           PREREQUISITES
+================================================================================
+
+Before starting, install these software:
+
+| Software          | Download Link                                    | Purpose              |
+|-------------------|--------------------------------------------------|----------------------|
+| Node.js 20+       | https://nodejs.org (LTS version)                 | Run backend/frontend |
+| Git               | https://git-scm.com/download/win                 | Clone repository     |
+| Docker Desktop    | https://www.docker.com/products/docker-desktop   | Run Oracle database  |
+
+After installing each one, restart your terminal/command prompt.
+
+================================================================================
+                    STEP 1: CLONE THE REPOSITORY
+================================================================================
+
+Open Command Prompt or PowerShell and run:
+
+    git clone https://github.com/Nischal-18/DRDO.git
+    cd DRDO
+
+================================================================================
+                    STEP 2: SET UP ORACLE DATABASE (DOCKER)
+================================================================================
+
+2.1 START DOCKER DESKTOP
+------------------------
+- Open Docker Desktop application
+- Wait until it shows "Docker is running" (green icon in system tray)
+
+2.2 PULL AND RUN ORACLE XE CONTAINER
+------------------------------------
+Run this command (it will download ~2GB, may take a few minutes):
+
+    docker run -d --name oracle-free -p 1521:1521 -e ORACLE_PASSWORD=MyStrongPassword123 container-registry.oracle.com/database/free:latest
+
+WAIT 2-3 MINUTES for Oracle to initialize.
+
+Check if Oracle is ready:
+
+    docker logs oracle-free
+
+Look for this message: "DATABASE IS READY TO USE!"
+
+2.3 CREATE DATABASE TABLES
+--------------------------
+Run this command from the DRDO folder:
+
+    type DRDO-backend\schema.sql | docker exec -i oracle-free sqlplus system/MyStrongPassword123@//localhost:1521/freepdb1
+
+If you see "Schema created successfully!", the database is ready.
+
+================================================================================
+                    STEP 3: SET UP BACKEND
+================================================================================
+
+3.1 NAVIGATE TO BACKEND FOLDER
+------------------------------
+    cd DRDO-backend
+
+3.2 INSTALL DEPENDENCIES
+------------------------
+    npm install
+
+3.3 CREATE .env FILE
+--------------------
+Create a new file named ".env" (no extension) in the DRDO-backend folder.
+
+You can do this in Notepad:
+- Open Notepad
+- Paste the content below
+- Save As > filename: ".env" (with quotes to prevent .txt extension)
+- Save in: DRDO-backend folder
+
+.env file content:
+------------------
+# Oracle Database Configuration
+DB_USER=system
+DB_PASSWORD=MyStrongPassword123
+DB_CONNECTION_STRING=127.0.0.1:1521/freepdb1
+
+# JWT Secret
+JWT_SECRET=drdo_super_secret_key_change_in_production_2026
+JWT_EXPIRE=7d
+
+# Server Configuration
+PORT=5000
+NODE_ENV=development
+
+# CORS
+FRONTEND_URL=http://localhost:5173
+------------------
+
+3.4 START BACKEND
+-----------------
+    npm start
+
+You should see:
+    Oracle Database connection pool created successfully
+    Server running on http://localhost:5000
+
+KEEP THIS TERMINAL OPEN! Do not close it.
+
+================================================================================
+                    STEP 4: SET UP FRONTEND
+================================================================================
+
+4.1 OPEN A NEW TERMINAL
+-----------------------
+Open a NEW Command Prompt or PowerShell window.
+Keep the backend terminal running in the background.
+
+4.2 NAVIGATE TO FRONTEND FOLDER
+-------------------------------
+    cd DRDO\DRDO-frontend
+
+4.3 INSTALL DEPENDENCIES
+------------------------
+    npm install
+
+4.4 START FRONTEND
+------------------
+    npm run dev
+
+You should see:
+    VITE ready
+    Local: http://localhost:5173/
+
+================================================================================
+                    STEP 5: OPEN THE APPLICATION
+================================================================================
+
+Open your web browser and go to:
+
+    http://localhost:5173
+
+The DRDO Portal should now be running!
+
+================================================================================
+                         TEST ACCOUNTS
+================================================================================
+
+| Role  | Email                | Password   | Notes                        |
+|-------|----------------------|------------|------------------------------|
+| User  | (create new account) | -          | Use Register page            |
+| Admin | admin@drdo.gov.in    | Admin@123  | May need password reset*     |
+
+* The admin account has a placeholder password hash. If login fails:
+  1. Register a new user account
+  2. Use that account for testing
+
+================================================================================
+                    DAILY USAGE (After First Setup)
+================================================================================
+
+Each time you want to run the project:
+
+1. START DOCKER DESKTOP
+   - Open Docker Desktop app
+   - Wait for it to be ready
+
+2. START ORACLE CONTAINER
+   Open Command Prompt and run:
+       docker start oracle-free
+
+3. START BACKEND (Terminal 1)
+       cd DRDO\DRDO-backend
+       npm start
+
+4. START FRONTEND (Terminal 2 - new window)
+       cd DRDO\DRDO-frontend
+       npm run dev
+
+5. OPEN BROWSER
+   Go to: http://localhost:5173
+
+================================================================================
+                         STOPPING THE PROJECT
+================================================================================
+
+To stop everything:
+
+1. Frontend: Press Ctrl+C in the frontend terminal
+2. Backend: Press Ctrl+C in the backend terminal
+3. Oracle: Run this command:
+       docker stop oracle-free
+
+================================================================================
+                         TROUBLESHOOTING
+================================================================================
+
+PROBLEM: 'docker' is not recognized
+SOLUTION: Install Docker Desktop and restart your terminal
+
+PROBLEM: 'npm' is not recognized
+SOLUTION: Install Node.js and restart your terminal
+
+PROBLEM: Oracle connection failed / ORA-12541
+SOLUTION: 
+  - Make sure Docker Desktop is running
+  - Run: docker start oracle-free
+  - Wait 2-3 minutes for Oracle to start
+  - Try again
+
+PROBLEM: Port 5000 already in use
+SOLUTION:
+  - Close other applications using port 5000
+  - Or change PORT=5000 to PORT=5001 in .env file
+
+PROBLEM: Port 5173 already in use
+SOLUTION:
+  - Close other Vite/React servers
+  - Or run: npm run dev -- --port 3000
+
+PROBLEM: "Cannot find module" error
+SOLUTION:
+  - Delete node_modules folder
+  - Run: npm install
+
+PROBLEM: Git clone fails
+SOLUTION:
+  - Check internet connection
+  - Make sure Git is installed
+  - Try: git --version (should show version number)
+
+================================================================================
+                         PROJECT STRUCTURE
+================================================================================
+
+DRDO/
+|
+|-- DRDO-backend/           # Backend (Node.js + Express + Oracle)
+|   |-- src/
+|   |   |-- config/         # Database connection
+|   |   |-- controllers/    # API business logic
+|   |   |-- middleware/     # Authentication
+|   |   |-- models/         # Database queries
+|   |   |-- routes/         # API endpoints
+|   |-- .env                # Database credentials (YOU CREATE THIS)
+|   |-- app.js              # Main server file
+|   |-- schema.sql          # Database tables
+|   |-- package.json        # Dependencies
+|
+|-- DRDO-frontend/          # Frontend (React + TypeScript + Tailwind)
+|   |-- src/
+|   |   |-- components/     # Reusable UI components
+|   |   |-- context/        # Authentication state
+|   |   |-- pages/          # All pages (Home, Login, Dashboard, etc.)
+|   |   |-- services/       # API calls
+|   |-- package.json        # Dependencies
+|
+|-- SETUP_GUIDE_WINDOWS.txt # This file
+|-- DRDO_PROJECT_STATUS.txt # Project status and documentation
+
+================================================================================
+                         TECH STACK
+================================================================================
+
+Frontend:
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Vite 7
+- React Router
+
+Backend:
+- Node.js
+- Express.js
+- Oracle XE (via Docker)
+- JWT Authentication
+
+================================================================================
+                         API ENDPOINTS
+================================================================================
+
+| Method | Endpoint                          | Description              |
+|--------|-----------------------------------|--------------------------|
+| POST   | /api/auth/register                | Create user account      |
+| POST   | /api/auth/login                   | Login user               |
+| GET    | /api/auth/profile                 | Get user profile         |
+| POST   | /api/applications                 | Submit application       |
+| GET    | /api/applications/my-applications | Get user's applications  |
+| GET    | /api/applications                 | Get all apps (admin)     |
+| PUT    | /api/applications/:id/status      | Update app status        |
+| GET    | /api/users                        | Get all users (admin)    |
+| PUT    | /api/users/:id/role               | Update user role (admin) |
+
+================================================================================
+                         NEED HELP?
+================================================================================
+
+If you encounter issues not covered in this guide:
+
+1. Check the DRDO_PROJECT_STATUS.txt file for more details
+2. Make sure all prerequisites are installed correctly
+3. Verify Docker Desktop is running before starting Oracle
+4. Ensure both terminals (backend + frontend) are running
+
+================================================================================
+                              END OF GUIDE
+================================================================================
